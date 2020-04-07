@@ -351,7 +351,7 @@ router.get('/telegram_postss', function (req, res, next) {
           setup();
           console.log(error);
         })
-    }, 15000)
+    }, 20000)
     
     function posttele (bodyss, lastInsertId, lastArrayData) {
         let sqls = "SELECT post_id FROM post_telegram  ORDER BY id DESC LIMIT 1";
@@ -434,8 +434,9 @@ router.get('/telegram_postss', function (req, res, next) {
                           console.log('final[j]2: ', final[j]);
                         }
                       }else{
-                        let finalLink =unshortenedUrl.split('?');
-                        final[j] = array[j].replace("["+urls[0].replace(/@/g, ' ').trim()+"]",finalLink[0]).replace(/.#x...../g,' %E2%99%A8 ').replace(/&/g, 'and').replace(/;/g, ' ');
+                        // let finalLink =unshortenedUrl.split('?');
+                        // final[j] = array[j].replace("["+urls[0].replace(/@/g, ' ').trim()+"]",finalLink[0]).replace(/.#x...../g,' %E2%99%A8 ').replace(/&/g, 'and').replace(/;/g, ' ');
+                  final[j] = ' ';
                       }
                     })
                     .catch(function(err){ console.error('AAAW 👻', err)})
@@ -443,9 +444,7 @@ router.get('/telegram_postss', function (req, res, next) {
                       })
                       .catch(function(err){ console.error('AAAW 👻', err)})
                 }else{
-                  // final[j] = array[j].replace(/.#x...../g,' %E2%99%A8 ').replace(/[[\]]/g,'').replace(/&/g, 'and').replace(/;/g, ' ');
                   final[j] = array[j].replace(/.#x...../g,' %E2%99%A8 ').replace(/[[\]]/g,'').replace(/&/g, 'and').replace(/;/g, ' ').replace(/^\s+|\s+$|\s+(?=\s)/g, '');
-                  console.log('final[j]: ', final[j]);
                 }
               }
               setTimeout(()=>{
