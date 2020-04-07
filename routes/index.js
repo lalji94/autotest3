@@ -351,7 +351,7 @@ router.get('/telegram_postss', function (req, res, next) {
           setup();
           console.log(error);
         })
-    }, 20000)
+    }, 15000)
     
     function posttele (bodyss, lastInsertId, lastArrayData) {
         let sqls = "SELECT post_id FROM post_telegram  ORDER BY id DESC LIMIT 1";
