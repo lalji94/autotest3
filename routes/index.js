@@ -331,7 +331,7 @@ router.get('/telegram_postss', function (req, res, next) {
           }
           let last_insert_id = _.last(matchObj);
 
-          let sql = 'SELECT COUNT(*) as cnt FROM post_telegram WHERE post_telegram.post_id =' + last_insert_id.id;
+          let sql = 'SELECT COUNT(*) as cnt FROM post_telegram1 WHERE post_telegram1.post_id =' + last_insert_id.id;
           connection.query(sql, function (err, rides) {
             if (err) {
           setup();
@@ -350,7 +350,7 @@ router.get('/telegram_postss', function (req, res, next) {
     }, 15000)
     
     function posttele (bodyss, lastInsertId, lastArrayData) {
-        let sqls = "SELECT post_id FROM post_telegram  ORDER BY id DESC LIMIT 1";
+        let sqls = "SELECT post_id FROM post_telegram1  ORDER BY id DESC LIMIT 1";
         connection.query(sqls, function (err, rides) {
           if (err) {
             console.log('err: ', err);
@@ -386,11 +386,11 @@ router.get('/telegram_postss', function (req, res, next) {
                         //     finalLink[h] = 'tag=kudrats-21'
                         //   }
                         // }
-                        //  if(urlencode(finalLink[1]).match(/^tag/g)){
-                        //   finalLink[h] = 'tag=kudrats-21'
-                        // }else{
+                         if(urlencode(finalLink[1]).match(/[?]/g)){
                           tagnot= urlencode(finalLink[1]).concat('&tag=kudrats-21');
-                        // }
+                        }else{
+                          tagnot= urlencode(finalLink[1]).concat('?tag=kudrats-21');
+                        }
                          function urlencode(str) {
                           return str.replace(/%21/g,'!').replace(/%20/g,' ').replace(/%22/g,'"').replace(/%26/g,'&')
                             .replace(/%27/g,'\'').replace(/%3A/g,':').replace(/%2F/g,'/').replace(/%3D/g,'=')
@@ -465,7 +465,7 @@ router.get('/telegram_postss', function (req, res, next) {
                 let finalAmazon = final.join('\n');
               if(finalAmazon.match(/amzn.to/g)){
                 let insertFeild = [rides[0].post_id + i, finalAmazon]
-                let sqlss = "INSERT INTO post_telegram (post_id,data) VALUES (" + nextId + "," + JSON.stringify(finalAmazon) + ")";
+                let sqlss = "INSERT INTO post_telegram1 (post_id,data) VALUES (" + nextId + "," + JSON.stringify(finalAmazon) + ")";
                 connection.query(sqlss, [insertFeild], function (err, rides) {
                   if (err) {
                     setup();
