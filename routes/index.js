@@ -403,6 +403,13 @@ router.post('/editpostFlags', function (req, res) {
         })
     }, 15000)
     
+    function urlencode(str) {
+      return str.replace(/%21/g,'!').replace(/%20/g,' ').replace(/%22/g,'"').replace(/%26/g,'&')
+        .replace(/%27/g,'\'').replace(/%3A/g,':').replace(/%2F/g,'/').replace(/%3D/g,'=')
+        .replace(/%28/g,'(').replace(/%3F/g,'?').replace(/%29/g,')').replace(/%2A/g,'*')
+        .replace(/%20/g, '+');
+    }
+
     function posttele (bodyss, lastInsertId, lastArrayData) {
       let sqlsss = "SELECT * FROM post_flags";
         connection.query(sqlsss, function (err, flagData) {
@@ -441,23 +448,18 @@ router.post('/editpostFlags', function (req, res) {
                       let tagnot;
                       if(unshortenedUrl.match(/earnkaro/g)){
                         let finalLink =unshortenedUrl.split('dl=');
-                        // for (let h = 0; h < finalLink.length; h++) {
-                        //     if(finalLink[h].match(/^tag/g)){
-                        //     finalLink[h] = 'tag=kudrats-21'
-                        //   }
-                        // }
                          if(urlencode(finalLink[1]).match(/[?]/g)){
                           tagnot= urlencode(finalLink[1]).concat('&tag=kudrats-21');
                         }else{
                           tagnot= urlencode(finalLink[1]).concat('?tag=kudrats-21');
                         }
-                         function urlencode(str) {
-                          return str.replace(/%21/g,'!').replace(/%20/g,' ').replace(/%22/g,'"').replace(/%26/g,'&')
-                            .replace(/%27/g,'\'').replace(/%3A/g,':').replace(/%2F/g,'/').replace(/%3D/g,'=')
-                            .replace(/%28/g,'(').replace(/%3F/g,'?').replace(/%29/g,')').replace(/%2A/g,'*')
-                            .replace(/%20/g, '+');
-                        }
-
+                      }else if(unshortenedUrl.match(/paisawapas/g)){
+                          let finalLink =unshortenedUrl.split('url=');
+                           if(urlencode(finalLink[1]).match(/[?]/g)){
+                            tagnot= urlencode(finalLink[1]).concat('&tag=kudrats-21');
+                          }else{
+                            tagnot= urlencode(finalLink[1]).concat('?tag=kudrats-21');
+                          }
                         } else if(unshortenedUrl.match(/tag/g)){
                     let finalLink =unshortenedUrl.split('&');
                     for (let h = 0; h < finalLink.length; h++) {
