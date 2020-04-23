@@ -304,6 +304,7 @@ router.get('/telegram_posts', function (req, res, next) {
 router.get('/singlepostFlags', function (req, res) {
   async.waterfall([
     function (nextCall) {
+      // postImageWidth('https://amzn.to/3almMul')
       var sqlss = " SELECT * FROM post_flags WHERE id = 1";
       connection.query(sqlss, function (err, rides) {
         if (err) {
@@ -361,6 +362,70 @@ router.post('/editpostFlags', function (req, res) {
   });
 });
 
+function postImageWidth(post_link) {
+  axios(post_link)
+  // axios('https://www.amazon.in/dp/B07DJD1RTM')
+      .then(response => {
+          var html = response.data;
+          var $ = cheerio.load(html);
+          var matchObj = [];
+          var siteheading = $('#productTitle').text().trim();
+          var siteheadidsdng = $('.imgTagWrapper').find('img').attr('data-old-hires');
+          var sitestrckprice = $('.priceBlockStrikePriceString').text().trim();
+          var sitestrckpricessds = $('#priceblock_ourprice').text().trim();
+          var savepercent = $('.priceBlockSavingsString').text().replace(/\s\s+/g, '');
+          // var savepercent = $('.priceBlockSavingsString').text().replace(/\s\s+/g, '').replace(/\([^()]*\)/g, '');
+          var savepercentage = $('.priceBlockSavingsString').text().match(/\(([^)]+)\)/);
+          var siteTitle = $('.priceBlockDealPriceString').text().replace(/\s\s+/g, '');
+          var avilabilty = $('#availability').find('span').text().trim();
+
+          if(siteheadidsdng && siteheading && sitestrckprice && sitestrckpricessds && savepercent ){
+            console.log("===i");
+          telePost(siteheadidsdng,siteheading,sitestrckprice,sitestrckpricessds,savepercent,post_link,avilabilty)
+          }
+      })
+      .catch(console.error);
+    }
+
+    function telePost (post_img,post_title,post_regularPrice,post_sellPrice,savepercent,post_link,avilabilty) {
+      var token = '1012069743:AAHAQ-sDOZQW0Qvh3iCrRfmgI2oDTe1Cqqk';  // <= replace with yours
+      var chatId = '@testchannel0112'; // <= replace with yours
+
+      // var savings = post_regularPrice - post_sellPrice;
+      // var savEPERCENT = Math.round(100 * savings / post_regularPrice);
+
+      var html = '🛍 ' + post_title + '\n\n' +
+        '🚫 <b>M.R.P. : </b> ' + post_regularPrice + '\n' +
+        '♨️ <b style="background-color:red;">PRICE : </b> ' + post_sellPrice + '\n' +
+        '💰 <b>SAVINGS : </b> ' + savepercent + '\n' +
+        '🙋 <b>AVAILABLE : </b> <i> ' + avilabilty + '</i>\n' +
+        '🔗 <a href="' + post_link + '">' + post_link + '</a>\n' +
+        '🚚 FREE Delivery\n\n' +
+        // '👉 More Deals - <a href= @' + req.query.chanel + '> @' + req.query.chanel+'</a>\n'+
+        // '👉 More Deals - @' + req.query.chanel;
+        '👉 <a href="https://t.me/bestshoppingdeal00"> Join US for More Deals </a>\n';
+      // +'\n'+
+      // '🌐 Website - <a href=' + req.query.website.text + '>' + req.query.website + '</a>';
+      var buttons = [
+        [
+          { "text": "➡️ ➡️ 🛒 CLICK HERE TO BUY 🛒 ⬅️ ⬅️", "url": post_link }
+        ]
+      ];
+      console.log('html: ', html);
+
+      if (html) {
+        bot = new nodeTelegramBotApi(token, { polling: true });
+        bot.sendPhoto(chatId, post_img, {
+          caption: html,
+          parse_mode: "HTML",
+          disable_web_page_preview: true,
+          "reply_markup": {
+            "inline_keyboard": buttons
+          }
+        });
+      }
+    }
+ 
 // setInterval( function (req, res, next) {
 //   async.waterfall([
   setInterval( function setup() {
@@ -484,6 +549,7 @@ router.post('/editpostFlags', function (req, res) {
                         async function example(dddd) {
                           let response =await bitly.shorten(dddd);
                         final[j] = array[j].replace("["+urls[0].replace(/@/g, ' ').trim()+"]",response.link).replace(/.#x...../g,' %E2%99%A8 ').concat("\n").replace(/&/g, 'and').replace(/;/g, ' ');
+                        postImageWidth(response.link); 
                         console.log('final[j]2: ', final[j]);
                       }
                     }else{
@@ -525,6 +591,7 @@ router.post('/editpostFlags', function (req, res) {
                           async function example(dddd) {
                             let response =await bitly.shorten(dddd);
                           final[j] = array[j].replace("["+urls[0].replace(/@/g, ' ').trim()+"]",response.link).replace(/.#x...../g,' %E2%99%A8 ').concat("\n").replace(/&/g, 'and').replace(/;/g, ' ');
+                          postImageWidth(response.link); 
                           console.log('final[j]2: ', final[j]);
                         }
                       }else{
