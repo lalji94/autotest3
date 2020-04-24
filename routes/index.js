@@ -304,7 +304,7 @@ router.get('/telegram_posts', function (req, res, next) {
 router.get('/singlepostFlags', function (req, res) {
   async.waterfall([
     function (nextCall) {
-      // postImageWidth('https://amzn.to/3almMul')
+      // postImageWidth('https://amzn.to/2x4HOzP')
       var sqlss = " SELECT * FROM post_flags WHERE id = 1";
       connection.query(sqlss, function (err, rides) {
         if (err) {
@@ -382,6 +382,8 @@ function postImageWidth(post_link) {
           if(siteheadidsdng && siteheading && sitestrckprice && sitestrckpricessds && savepercent ){
             console.log("===i");
           telePost(siteheadidsdng,siteheading,sitestrckprice,sitestrckpricessds,savepercent,post_link,avilabilty)
+          }else{
+            console.log("no---");
           }
       })
       .catch(console.error);
@@ -414,7 +416,7 @@ function postImageWidth(post_link) {
       console.log('html: ', html);
 
       if (html) {
-        bot = new nodeTelegramBotApi(token, { polling: true });
+        bot = new nodeTelegramBotApi(token);
         bot.sendPhoto(chatId, post_img, {
           caption: html,
           parse_mode: "HTML",
@@ -543,7 +545,11 @@ function postImageWidth(post_link) {
                     }
                      tagnot= finalLink.join('&').replace(/@/g, '');
                     }else{
+                      if(unshortenedUrl.match(/[?]/g)){
                      tagnot= unshortenedUrl.replace(/@/g, '').concat('&tag=kudrats-21');
+                      }else{
+                     tagnot= unshortenedUrl.replace(/@/g, '').concat('?tag=kudrats-21');
+                      }
                     }
                    example(tagnot.replace(/&demoyou/g, ''));
                         async function example(dddd) {
@@ -585,7 +591,11 @@ function postImageWidth(post_link) {
                     }
                      tagnot= finalLink.join('&').replace(/@/g, '');
                     }else{
-                     tagnot= unshortenedUrl.replace(/@/g, '').concat('&tag=kudrats-21');
+                     if(unshortenedUrl.match(/[?]/g)){
+                      tagnot= unshortenedUrl.replace(/@/g, '').concat('&tag=kudrats-21');
+                       }else{
+                      tagnot= unshortenedUrl.replace(/@/g, '').concat('?tag=kudrats-21');
+                       }
                     }
                    example(tagnot.replace(/&demoyou/g, ''));
                           async function example(dddd) {
