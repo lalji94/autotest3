@@ -555,7 +555,7 @@ function postImageWidth(post_link) {
                         async function example(dddd) {
                           let response =await bitly.shorten(dddd);
                         final[j] = array[j].replace("["+urls[0].replace(/@/g, ' ').trim()+"]",response.link).replace(/.#x...../g,' %E2%99%A8 ').concat("\n").replace(/&/g, 'and').replace(/;/g, ' ');
-                        postImageWidth(response.link); 
+                        // postImageWidth(response.link); 
                         console.log('final[j]2: ', final[j]);
                       }
                     }else{
@@ -601,7 +601,7 @@ function postImageWidth(post_link) {
                           async function example(dddd) {
                             let response =await bitly.shorten(dddd);
                           final[j] = array[j].replace("["+urls[0].replace(/@/g, ' ').trim()+"]",response.link).replace(/.#x...../g,' %E2%99%A8 ').concat("\n").replace(/&/g, 'and').replace(/;/g, ' ');
-                          postImageWidth(response.link); 
+                          // postImageWidth(response.link); 
                           console.log('final[j]2: ', final[j]);
                         }
                       }else{
